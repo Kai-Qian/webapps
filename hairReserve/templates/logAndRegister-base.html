@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block registAndLogin %}
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 text">
+                    <h1 class="title"><strong>CUTS</strong></h1>
+                    <p class="subtitle">
+                        Get your haircut!
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-7 col-sm-offset-3">
+                    {% block regOrLog %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block background %}
+    <script src="{% static 'js/backgroundAnimation.js' %}"></script>
+{% endblock %}

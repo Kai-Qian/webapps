@@ -1,0 +1,183 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block header %}
+    <header class="jumbotron jumbotronBackground">
+        <div class="container">
+            <div class="row row-header">
+                <div class="col-xs-12 col-sm-12">
+                    <p style="padding:20px;"></p>
+                    <h1>Find the barbershop around you</h1>
+                    <p style="padding:30px;"></p>
+                    <h2>Make a free reservation</h2>
+                    <p style="padding:8px;"></p>
+                    <form role="form" method="post" id="searchBarbershopForm" action="{% url 'searchBarbershop' %}"
+                          class="login-form">
+                        <div class="w3-row-padding">
+                            {% for field in search_form.visible_fields %}
+                                {% if field.html_name == 'service_type' %}
+                                    <div class="form-group w3-col s3 styled-select">
+                                        <select name="{{ field.html_name }}" style="width:100%;color: black">
+                                            {% for choice in search_form.service_type.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'time' %}
+                                    <div class="form-group w3-col s2 styled-select">
+                                        <select name="{{ field.html_name }}" style="width:100%;color: black">
+                                            {% for choice in search_form.time.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'city' %}
+                                    <div class="form-group w3-col s3 styled-select">
+                                        <select name="{{ field.html_name }}" style="width:100%;color: black">
+                                            {% for choice in search_form.city.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% else %}
+                                    <div class="form-group w3-col s2">
+                                        <div id="div_{{ field.html_name }}"
+                                             class="form-group{% if field.errors %} has-error{% endif %}">
+                                            {{ field }}
+                                            <div class="text-muted pull-right">
+                                                <small>{{ field.help_text }}</small>
+                                            </div>
+                                            <div class="help-block">
+                                                {{ field.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                            {% for hidden in form.hidden_fields %}
+                                {{ hidden }}
+                            {% endfor %}
+                            <div class="form-group w3-col s2">
+                                <button type="submit" class="btn" form="searchBarbershopForm">Find a barbershop</button>
+                                {#                                <input type="submit" value="Find a barbershop">#}
+                            </div>
+                        </div>
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row row-content">
+            <div class="col-xs-12">
+                <div id="mycarousel" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        {% for barbershop in results %}
+                            {% if barbershop.name == 'Nice' %}
+                                <div class="item active list-group-items">
+                                    <div class="thumbnail">
+                                        <a href="{% url 'follow' barbershop.name %}">
+                                            {% if barbershop.picture_url %}
+                                                <img src="{{ barbershop.picture_url }}" class="list-group-image"
+                                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                            {% else %}
+                                                <img src="{% static 'img/default-avatar.png' %}"
+                                                     class="list-group-image"
+                                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                            {% endif %}
+                                            {#                                <img class="list-group-image" src="http://placehold.it/400x250/000/fff" alt=""/>#}
+                                        </a>
+
+                                        <div class="caption">
+                                            <div class="row" style="padding-left: 10px">
+                                                <a href="{% url 'follow' barbershop.name %}">
+                                                    <h1 class="list-group-item-heading">
+                                                        {{ barbershop.name }}</h1>
+                                                </a>
+                                                <p class="blackFont list-group-item-text">
+                                                    {{ barbershop.description }}</p>
+
+
+                                                <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                                    Service type: {{ barbershop.service_type }}</p>
+                                                <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                                    Rating: {{ barbershop.rating }}</p>
+                                                <p class="blackFont list-group-item-text">
+                                                    Operation time: {{ barbershop.operation_start_time }}
+                                                    - {{ barbershop.operation_end_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="item list-group-items">
+                                    <div class="thumbnail">
+                                        <a href="{% url 'follow' barbershop.name %}">
+                                            {% if barbershop.picture_url %}
+                                                <img src="{{ barbershop.picture_url }}" class="list-group-image"
+                                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                            {% else %}
+                                                <img src="{% static 'img/default-avatar.png' %}"
+                                                     class="list-group-image"
+                                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                            {% endif %}
+                                            {#                                <img class="list-group-image" src="http://placehold.it/400x250/000/fff" alt=""/>#}
+                                        </a>
+
+                                        <div class="caption">
+                                            <div class="row" style="padding-left: 10px">
+                                                <a href="{% url 'follow' barbershop.name %}">
+                                                    <h1 class="list-group-item-heading">
+                                                        {{ barbershop.name }}</h1>
+                                                </a>
+                                                <p class="blackFont list-group-item-text">
+                                                    {{ barbershop.description }}</p>
+
+
+                                                <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                                    Service type: {{ barbershop.service_type }}</p>
+                                                <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                                    Rating: {{ barbershop.rating }}</p>
+                                                <p class="blackFont list-group-item-text">
+                                                    Operation time: {{ barbershop.operation_start_time }}
+                                                    - {{ barbershop.operation_end_time }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    </div>
+                    <a class="left carousel-control" href="#mycarousel" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a class="right carousel-control" href="#mycarousel" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+
+                    <div class="btn-group" id="carouselButtons">
+                        <button class="btn btn-danger btn-xs" id="carousel-pause">
+                            <span class="glyphicon glyphicon-pause"></span>
+                        </button>
+                        <button class="btn btn-danger btn-xs" id="carousel-play">
+                            <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block active1 %}
+    class="active"
+{% endblock %}
+{#{% block background %}#}
+{#    <script src="{% static 'js/postComment.js.js' %}"></script>#}
+{#    <script src="{% static 'js/refreshGlobalStream.js' %}"></script>#}
+{#{% endblock %}#}

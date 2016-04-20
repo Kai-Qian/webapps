@@ -1,0 +1,2 @@
+https://github.com/nkunihiko/django-bootstrap3-datetimepicker
+http://plugins.krajee.com/star-rating-demo-advanced-usage

@@ -1,0 +1,44 @@
+{% load static %}
+<div id="comments">
+    <section class="comment-list">
+        <!-- First Comment -->
+        {% for comment in comments %}
+            <article class="row">
+                <div class="col-md-2 col-sm-2 hidden-xs">
+{#                    <figure class="thumbnail">#}
+                        {% if comment.user.profile.picture_url %}
+                            <img src="{{ comment.user.profile.picture_url }}" class="img-rotate img-thumbnail"
+                                 style="max-height: 150px;width: 150px"/>
+                        {% else %}
+                            <img src="{% static 'img/default-avatar.png' %}" class="img-rotate img-thumbnail"
+                                 style="max-height: 150px;width: 150px"/>
+                        {% endif %}
+{#                    </figure>#}
+                </div>
+                <div class="col-md-10 col-sm-10">
+                    <div class="panel panel-default arrow left">
+                        <div class="panel-body">
+                            <header class="text-left">
+                                <div class="comment-user"><i
+                                        class="fa fa-user"></i> {{ comment.user }}
+                                </div>
+                                <time class="comment-date"><i
+                                        class="fa fa-clock-o"></i>
+                                    {{ comment.dateAndTime }}
+                                </time>
+                            </header>
+                            <div class="comment-post">
+                                <p class="blackFont" style="font-size: medium">
+                                    {{ comment.text }}
+                                </p>
+                                <p class="blackFont" style="margin-bottom: 0px; font-size: small">
+                                    Rating: {{ comment.rating }} stars
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+</div>

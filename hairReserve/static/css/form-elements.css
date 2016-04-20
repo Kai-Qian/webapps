@@ -1,0 +1,149 @@
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 200;
+    font-size: 20px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: #0f0f0f;
+    background: white;
+    border: 3px solid white;
+    border-radius: 5px;
+    transition: all 0.5s;
+    /*margin-right: 1px;*/
+    /*margin-left: 1px;*/
+}
+
+textarea {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 20px;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus {
+    background: white;
+    border: 3px solid white;
+    box-shadow: 0 0 10px 5px #adadad;
+}
+
+.styled-select select {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 200;
+    font-size: 20px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: #0f0f0f;
+    background: white;
+    border: 3px solid white;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+option {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 200;
+    font-size: 20px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: #0f0f0f;
+    background: white;
+    border: 3px solid white;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+select:focus {
+    background: white;
+    border: 3px solid white;
+    box-shadow: 0 0 10px 5px #adadad;
+}
+
+button.btn {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: white;
+    background: #1ca32d;
+    border: 3px solid #1ca32d;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+button.btn2 {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: white;
+    border-radius: 5px;
+    transition: all;
+}
+
+button.btn3 {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: white;
+    border-radius: 5px;
+    transition: all;
+}
+
+button.btn4 {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: white;
+    background: red;
+    border: 3px solid red;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+button.btn5 {
+    font-family: 'Roboto', 'sans-serif';
+    font-weight: 300;
+    font-size: 25px;
+    line-height: 20px;
+    height: 40px;
+    padding: 0 10px;
+    vertical-align: middle;
+    color: white;
+    background: blue;
+    border: 3px solid blue;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+button.btn:hover, button.btn:active {
+    opacity: 0.6;
+    color: white;
+}
+
+button.btn2:hover, button.btn2:active {
+    opacity: 0.6;
+    color: white;
+}
+
+button.btn3:hover, button.btn2:active {
+    opacity: 0.6;
+    color: white;
+}

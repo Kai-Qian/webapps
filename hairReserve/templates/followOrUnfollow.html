@@ -1,0 +1,10 @@
+<div id="followButton">
+    <button class="btn3 btn-info follow-btn" style="float: right"
+            onclick="followOrUnfollow(this);"
+            value="{{ following }}"
+            barbershopname="{{ barbershop.name }}">
+         <span class="follow-text">
+             {{ following|yesno:"Favorited,Add to favorites" }}
+         </span>
+    </button>
+</div>

@@ -1,0 +1,60 @@
+{% extends "logAndRegister-base.html" %}
+{% load static %}
+{% block regOrLog %}
+    <div class="form-box item" id="registerPage">
+        <div class="form-top">
+            <div class="form-top-left">
+                <h3>Sign up as customer</h3>
+                <p>Enter your name, email and password to sign up:</p>
+            </div>
+            <div class="form-top-right">
+                <i class="fa fa-pencil-square-o"></i>
+            </div>
+        </div>
+
+        <div class="form-bottom">
+            {% for error in user_form.errors %}
+                <ul>
+                    <li class="warning">{{ error }} is missing or have been used.</li>
+                </ul>
+            {% endfor %}
+            <form role="form" method="post" action="{% url 'register' %}" class="login-form">
+                {% for field in user_form.visible_fields %}
+                    {% if field.html_name == 'password' or field.html_name == 'password2' %}
+                        <div class="form-group">
+                            <input type="password" id="{{ field.id_for_label }}"
+                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                   class="form-control">
+                        </div>
+                    {% elif field.html_name == 'email' %}
+                        <div class="form-group">
+                            <input type="email" id="{{ field.id_for_label }}"
+                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                   class="form-control">
+                        </div>
+                    {% elif field.html_name == 'city' %}
+                        <div class="form-group styled-select">
+                            <select name="{{ field.html_name }}" >
+                                {% for choice in user_form.city.field.choices %}
+                                    <option value ="{{choice.0}}">{{choice.1}}</option>
+                                {% endfor %}
+                            </select>
+{#                            <input type="email" id="{{ field.id_for_label }}"#}
+{#                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"#}
+{#                                   class="form-control">#}
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <input type="text" id="{{ field.id_for_label }}"
+                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                   class="form-control">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn">Sign up</button>
+                <a href="{% url 'login' %}" style="color: white">Sign in</a>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

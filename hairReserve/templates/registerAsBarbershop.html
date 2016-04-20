@@ -1,0 +1,148 @@
+{% extends "logAndRegister-base.html" %}
+{% load static %}
+{% block regOrLog %}
+    <div class="form-box item" id="registerAsBarbershopPage">
+        <div class="form-top">
+            <div class="form-top-left">
+                <h3>Sign up as barbershop user</h3>
+                <p>Enter your username, name, barbershop name, email, password, website and address to sign up:</p>
+            </div>
+            <div class="form-top-right">
+                <i class="fa fa-pencil-square-o"></i>
+            </div>
+        </div>
+
+        <div class="form-bottom">
+            {% for error in user_form.errors %}
+                <ul>
+                    <li class="warning">{{ error }} is missing or have been used.</li>
+                </ul>
+            {% endfor %}
+            {% for error in address_form.errors %}
+                <ul>
+                    <li class="warning">{{ error }} is missing or have been used.</li>
+                </ul>
+            {% endfor %}
+            {% for error in barbershop_form.errors %}
+                <ul>
+                    <li class="warning">{{ error }} is missing or have been used.</li>
+                </ul>
+            {% endfor %}
+            <form role="form" method="post" action="{% url 'registerAsBarbershop' %}" class="login-form">
+                <div class="w3-row-padding">
+                    {% for field in user_form.visible_fields %}
+                        {% if field.html_name == 'password' or field.html_name == 'password2' %}
+                            <div class="form-group w3-col s6">
+                                <input type="password" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% elif field.html_name == 'email' %}
+                            <div class="form-group w3-col">
+                                <input type="email" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% elif field.html_name == 'username' %}
+                            <div class="form-group w3-col">
+                                <input type="text" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% elif field.html_name == 'city' %}
+                        {% else %}
+                            <div class="form-group w3-col s6">
+                                <input type="text" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="w3-row-padding">
+                    {% for field in address_form.visible_fields %}
+                        {% if field.html_name == 'city' %}
+                            <div class="form-group w3-col s6 styled-select">
+                                <select name="{{ field.html_name }}" style="width:100%">
+                                    {% for choice in user_form.city.field.choices %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% elif field.html_name == 'address' %}
+                            <div class="form-group w3-col">
+                                <input type="text" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="Address"
+                                >
+                            </div>
+                        {% else %}
+                            <div class="form-group w3-col s6">
+                                <input type="text" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="w3-row-padding">
+                    {% for field in barbershop_form.visible_fields %}
+                        {% if field.html_name == 'rating' %}
+                        {% elif field.html_name == 'picture' %}
+                        {% elif field.html_name == 'description' %}
+                        {% elif field.html_name == 'service_type' %}
+                            <div class=" w3-col s12">
+                                <p>Service type</p>
+                                {% for choice in barbershop_form.service_type.field.choices %}
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" name="{{ field.html_name }}" value="{{ choice.0 }}">
+                                        <p>{{ choice.1 }}</p>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        {% elif field.html_name == 'operation_start_time' %}
+                            <div class="form-group w3-col s6 styled-select">
+                                <select name="{{ field.html_name }}" style="width:100%">
+                                    {% for choice in barbershop_form.operation_start_time.field.choices %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% elif field.html_name == 'operation_end_time' %}
+                            <div class="form-group w3-col s6 styled-select">
+                                <select name="{{ field.html_name }}" style="width:100%">
+                                    {% for choice in barbershop_form.operation_start_time.field.choices %}
+                                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        {% elif field.html_name == 'start_date' %}
+                            <div class="form-group w3-col s6 styled-select">
+                                <div id="div_{{ field.html_name }}">
+                                    <p>Start date</p>
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% elif field.html_name == 'end_date' %}
+                            <div class="form-group w3-col s6 styled-select">
+                                <div id="div_{{ field.html_name }}">
+                                    <p>End date</p>
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="form-group w3-col s6">
+                                <input type="text" id="{{ field.id_for_label }}" style="width:100%"
+                                       name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                >
+                            </div>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn">Sign up</button>
+                <a href="{% url 'login' %}" style="color: white">Sign in</a>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

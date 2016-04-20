@@ -1,0 +1,215 @@
+{% extends "home-base.html" %}
+{% load static %}
+{#{% load widget_tweaks %}#}
+{% block content %}
+    <div style="background: #e2f5d8">
+        <div class="innerBackground2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+{#                        <img style="float: left" src="http://placehold.it/400x250/000/fff"#}
+{#                             alt=""/>#}
+                        {% if barbershop.picture_url %}
+                            <img src="{{ barbershop.picture_url }}" class="img-rotate img-thumbnail"
+                                 style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                        {% else %}
+                            <img src="{% static 'img/default-avatar.png' %}" class="img-rotate img-thumbnail"
+                                 style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                        {% endif %}
+                        <div class="caption">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+
+                                    <h1 class="barbershop_name list-group-item-heading" data-barbershop_name="{{ barbershop.name }}">
+                                        {{ barbershop.name }}</h1>
+
+                                    <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                        Service type: {{ barbershop.service_type }}</p>
+                                    <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                        Rating: <input id="input-1" value="{{ barbershop.rating }}"
+                                                       class="rating-loading" readonly></p>
+                                    <p class="blackFont list-group-item-text">
+                                        Operation time: {{ barbershop.operation_start_time }}
+                                        - {{ barbershop.operation_end_time }}</p>
+                                </div>
+                                <div id="followButton">
+                                    <button class="btn3 btn-info follow-btn" style="float: right"
+                                            onclick="followOrUnfollow(this);"
+                                            value="{{ following }}"
+                                            barbershopname="{{ barbershop.name }}">
+                                        <span class="follow-text">
+                                            {{ following|yesno:"Favorited,Add to favorites" }}
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row row-content">
+                <div class="col-xs-12 col-sm-push-3 col-sm-7 innerBackground3">
+                    <form role="form" method="get" id="reserveBarbershopForm" action="{% url 'reserveBarbershop' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                        <div class="w3-row-padding">
+                            {% for field in search_form.visible_fields %}
+                                {% if field.html_name == 'service_type' %}
+                                    <div class="form-group w3-col s3 styled-select">
+                                        <select name="{{ field.html_name }}" style="width:100%;color: black">
+                                            {% for choice in search_form.service_type.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'time' %}
+                                    <div class="form-group w3-col s3 styled-select">
+                                        <select name="{{ field.html_name }}" style="width:100%;color: black">
+                                            {% for choice in search_form.time.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'city' %}
+                                    <input type="hidden" name="city" value="{{ city }}">
+                                {% else %}
+                                    <div class="form-group w3-col s3">
+                                        <div id="div_{{ field.html_name }}"
+                                             class="form-group{% if field.errors %} has-error{% endif %}">
+                                            {{ field }}
+                                            <div class="text-muted pull-right">
+                                                <small>{{ field.help_text }}</small>
+                                            </div>
+                                            <div class="help-block">
+                                                {{ field.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-group w3-col s3">
+                                <button type="submit" class="btn" form="reserveBarbershopForm">Reserve</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="about" class="row row-content" style="border-bottom: 0px">
+                <div class="col-xs-12 col-sm-push-3 col-sm-7 innerBackground3" style="margin-top: 0px">
+                    <p class="blackFont" style="font-size: large">
+                        About {{ barbershop.name }}</p>
+                    <iframe
+                            width=100%
+                            height=100%
+                            frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC73eT1Leato7dErKg-tUHfltd6Ywd0Vh8
+                            &q={{ result }}" allowfullscreen>
+                    </iframe>
+                    <p class="blackFont" style="font-size: large">
+                        {{ barbershop.description }}</p>
+                    <p class="blackFont" style="font-size: medium">
+                        Phone: {{ barbershop.phone }}</p>
+                    <p class="blackFont" style="font-size: medium">
+                        Website: {{ barbershop.website }}</p>
+                </div>
+            </div>
+            <div class="row row-content">
+                <div class="col-xs-12 col-sm-push-3 col-sm-7 innerBackground3">
+                    <h2 class="page-header" style="margin-top: 0px">Comments
+                        <a style="float: right" href="#commentModal"
+                           data-toggle="modal">
+                            <i class="glyphicon glyphicon-comment"></i>
+                        </a>
+                    </h2>
+
+                    <div id="comments">
+                        <section class="comment-list">
+                            <!-- First Comment -->
+                            {% for comment in comments %}
+                                <article class="row">
+                                    <div class="col-md-2 col-sm-2 hidden-xs">
+                                        {#                    <figure class="thumbnail">#}
+                                        {% if comment.user.profile.picture_url %}
+                                            <img src="{{ comment.user.profile.picture_url }}" class="img-rotate img-thumbnail"
+                                                 style="max-height: 150px;width: 150px"/>
+                                        {% else %}
+                                            <img src="{% static 'img/default-avatar.png' %}" class="img-rotate img-thumbnail"
+                                                 style="max-height: 150px;width: 150px"/>
+                                        {% endif %}
+                                        {#                    </figure>#}
+                                    </div>
+                                    <div class="col-md-10 col-sm-10">
+                                        <div class="panel panel-default arrow left">
+                                            <div class="panel-body">
+                                                <header class="text-left">
+                                                    <div class="comment-user"><i
+                                                            class="fa fa-user"></i> {{ comment.user }}
+                                                    </div>
+                                                    <time class="comment-date"><i
+                                                            class="fa fa-clock-o"></i>
+                                                        {{ comment.dateAndTime }}
+                                                    </time>
+                                                </header>
+                                                <div class="comment-post">
+                                                    <p class="blackFont" style="font-size: medium">
+                                                        {{ comment.text }}
+                                                    </p>
+                                                    <p class="blackFont" style="margin-bottom: 0px; font-size: small">
+                                                        Rating: {{ comment.rating }} stars
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="hidden-xs col-sm-1 col-sm-pull-10" style="float: right" id="myScrollspy">
+            <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="200">
+                <li><a href="#about">About {{ barbershop.name }}</a></li>
+                <li><a href="#comments">Comments</a></li>
+            </ul>
+        </nav>
+
+    </div>
+{% endblock %}
+{% block comment %}
+    <div id="commentModal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content" id="comment_form">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">Comment</button>
+                </div>
+                <form action="" method="post" class="form center-block">
+                    {# form's default method is GET, if you submit a form, it will always got to the action with the method, event you have ajax to deal with the form #}
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="form-group">
+                        <textarea class="form-control input-lg" autofocus name="comment"
+                                  placeholder="What do you want to comment?"></textarea>
+                        </div>
+                    </div>
+                    {% for error in errors2 %}
+                        <ul>
+                            <li class="warning">{{ error }}</li>
+                        </ul>
+                    {% endfor %}
+                    <label for="input-2" class="control-label">Rate This</label>
+                    <input id="input-2" name="rating" class="rating-loading">
+                    <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-sm">Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

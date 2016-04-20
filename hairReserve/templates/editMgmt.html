@@ -1,0 +1,170 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block content %}
+    <div class="innerBackground4">
+        <div class="container">
+            <h2>Edit your barbershop information</h2>
+            <div class="row row-content">
+
+                <div class="col-sm-3 col-xs-3">
+
+                    {#                    <img style="float: left" src="http://placehold.it/400x250/000/fff"#}
+                    {#                         alt=""/>#}
+                    {% if barbershop_object.picture_url %}
+                        <img src="{{ barbershop_object.picture_url }}" class="img-rotate img-thumbnail"
+                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                    {% else %}
+                        <img src="{% static 'img/default-avatar.png' %}" class="img-rotate img-thumbnail"
+                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                    {% endif %}
+                    {% if message %}
+                        <div class="message">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-sm-9 col-xs-9 col-sm-pull-1">
+{#                    {% for error in barbershop_form.errors %}#}
+{#                        <p class="warning">{{ error }}</p>#}
+{#                    {% endfor %}#}
+{#                    {% for error in address_form.errors %}#}
+{#                        <p class="warning">{{ error }}</p>#}
+{#                    {% endfor %}#}
+                    <form class="form-horizontal" id="update" action="{% url 'editMgmt' %}" method="post"
+                          enctype="multipart/form-data">
+                        {% for barbershop in barbershop_form.visible_fields %}
+                            <div class="form-group" style="margin-bottom: 0px">
+                                {% if barbershop.label == 'Picture' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <p><input id="id_picture" name="picture" type="file"/></p>
+                                    {% for error in barbershop.errors %}
+                                        <span style="color:red"> {{ error }} </span>
+                                    {% endfor %}
+                                {% elif barbershop.label == 'Rating' %}
+                                {% elif barbershop.html_name == 'service_type' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div class="form-group w3-col s8 styled-select" style="margin-left: 2px">
+                                        {% for choice in barbershop_form.service_type.field.choices %}
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" name="{{ barbershop.html_name }}"
+                                                       value="{{ choice.0 }}">
+                                                <p style="color: black">{{ choice.1 }}</p>
+                                            </label>
+                                        {% endfor %}<br>
+                                        {% for error in errors_service_type %}
+                                            <span style="color:red"> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                {% elif barbershop.html_name == 'operation_start_time' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div class="form-group w3-col s2 styled-select" style="margin-left: 2px">
+                                        <select name="{{ barbershop.html_name }}" style="width:100%;color: black">
+                                            {% for choice in barbershop_form.operation_start_time.field.choices %}
+                                                <option class="col-sm-4" value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% for error in barbershop.errors %}
+                                            <span style="color:red"> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                {% elif barbershop.html_name == 'operation_end_time' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div class="form-group w3-col s2 styled-select" style="margin-left: 2px">
+                                        <select name="{{ barbershop.html_name }}" style="width:100%;color: black">
+                                            {% for choice in barbershop_form.operation_end_time.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        {% for error in barbershop.errors %}
+                                            <span style="color:red"> {{ error }} </span>
+                                        {% endfor %}
+                                    </div>
+                                {% elif barbershop.html_name == 'start_date' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div id="div_{{ barbershop.html_name }}"
+                                         class="w3-col s3 form-group{% if barbershop.errors %} has-error{% endif %}"
+                                         style="margin-left: 2px">
+                                        {{ barbershop }}
+                                        <div class="text-muted pull-right">
+                                            <small>{{ barbershop.help_text }}</small>
+                                        </div>
+                                        <div class="help-block">
+                                            {{ barbershop.errors }}
+                                        </div>
+                                    </div>
+                                {% elif barbershop.html_name == 'end_date' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div id="div_{{ barbershop.html_name }}"
+                                         class="w3-col s3 form-group{% if barbershop.errors %} has-error{% endif %}"
+                                         style="margin-left: 2px">
+                                        {{ barbershop }}
+                                        <div class="text-muted pull-right">
+                                            <small>{{ barbershop.help_text }}</small>
+                                        </div>
+                                        <div class="help-block">
+                                            {{ barbershop.errors }}
+                                        </div>
+                                    </div>
+                                {% elif barbershop.html_name == 'name' %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div class="form-group w3-col s8">
+                                        <p class="col-sm-8">{{ barbershop }}
+                                            {% for error in errors_name %}
+                                                <span style="color:red"> {{ error }} </span>
+                                            {% endfor %}
+                                        </p>
+
+                                    </div>
+                                {% else %}
+                                    <label class="col-sm-4 control-label">{{ barbershop.label }}: </label>
+                                    <div class="form-group w3-col s8">
+                                        <p class="col-sm-8">{{ barbershop }}
+                                            {% for error in barbershop.errors %}
+                                                <span style="color:red"> {{ error }} </span>
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        <h2>Address</h2>
+                        <div id="address" class="row row-content">
+                            {% for address in address_form.visible_fields %}
+                                <div class="form-group w3-col s6">
+                                    <label class="col-sm-4 control-label">{{ address.label }}: </label>
+                                    <p class="col-sm-8">{{ address }}
+                                        {% for error in address.errors %}
+                                            <span style="color:red"> {{ error }} </span>
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <input type="hidden" name="barbershop" value="{{ barbershop_object }}">
+
+                        {% csrf_token %}
+                    </form>
+                    <form role="form" method="get" id="return"
+                          action="{% url 'returnToMgmt' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="barbershop" value="{{ barbershop_object }}">
+
+                    </form>
+                    <div class="row row-content">
+                        <div class="col-sm-4 col-sm-push-4">
+                            <button type="submit" style="display: inline-block"
+                                    class="btn btn-primary btn-sm" form="update">
+                                Update
+                            </button>
+                            <button type="submit" style="display: inline-block" class="btn2 btn-danger" form="return">
+                                Return
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}

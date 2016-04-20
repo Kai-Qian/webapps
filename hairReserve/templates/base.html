@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> {% block title %} Cuts {% endblock %} </title>
+    {#    <title>Connection</title>#}
+{#    {% load staticfiles %}#}
+    {% load static %}
+    <!-- Bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" type="text/css" rel="stylesheet">
+    <link href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}" type="text/css" rel="stylesheet">
+    <link href="https://cdn.rawgit.com/twbs/bootstrap/v4-dev/dist/css/bootstrap.css" type="text/css" rel="stylesheet">
+    <!-- font-awesome -->
+    <link rel="stylesheet" type="text/css" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/form-elements.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/myStyle.css' %}">
+    <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+    <link href="{% static 'bootstrap3_datetime/css/bootstrap-datetimepicker.min.css' %}" type="text/css" media="all" rel="stylesheet" />
+
+    <link href="{% static 'star-rating/css/star-rating.css' %}" media="all" rel="stylesheet" type="text/css" />
+    <!-- Custom styles for the salonMgmt template -->
+
+{#    <link href="{% static 'css/dashboard.css' %}" type="text/css" rel="stylesheet">#}
+
+
+{#    <link href="{% static 'css/datetimepicker.min.css' %}" type="text/css" rel="stylesheet">#}
+
+    <!-- METRO UI CSS 2.0 FONTS -->
+
+
+{#    <link href="{% static 'css/iconFont.min.css' %}" type="text/css" rel="stylesheet">#}
+
+    <!-- Open sans google fonts -->
+{#    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600,300,800' rel='stylesheet' type='text/css'>#}
+    <!-- Morris charts -->
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">#}
+
+
+</head>
+<body data-spy="scroll" data-target="#myScrollspy" data-offset="0">
+<div>
+    {% block registAndLogin %}
+    {% endblock %}
+</div>
+<div>
+    {% block nav %}
+    {% endblock %}
+</div>
+
+
+<div>
+    {% block header %}
+    {% endblock %}
+</div>
+<div>
+    {% block content %}
+    {% endblock %}
+</div>
+<div>
+    {% block footer %}
+    {% endblock %}
+</div>
+<div>
+    {% block modal %}
+    {% endblock %}
+</div>
+<div>
+    {% block comment %}
+    {% endblock %}
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="{% static 'js/jquery-1.12.0.js' %}"></script>
+<script src="{% static 'js/jquery-1.12.0.min.js' %}"></script>
+<script src="{% static 'js/jquery.backstretch.min.js' %}"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+{#<script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>#}
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/check.js' %}"></script>
+<script src="{% static 'js/postComment.js' %}"></script>
+<script src="{% static 'js/refreshGlobalStream.js' %}"></script>
+<script src="{% static 'bootstrap3_datetime/js/moment.min.js' %}"></script>
+<script src="{% static 'bootstrap3_datetime/js/bootstrap-datetimepicker.min.js' %}"></script>
+<script src="{% static 'js/changeView.js' %}"></script>
+<script src="{% static 'star-rating/js/star-rating.js' %}" type="text/javascript"></script>
+
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>#}
+
+
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>#}
+{#<script src="{% static 'js/docs.min.js' %}"></script>#}
+
+
+{#<script src="{% static 'js/moment.js' %}"></script>#}
+<script>
+    $(document).on('ready', function(){
+        $('#input-1').rating({min: 0, max: 5, step: 0.1, stars: 5, size:'xs'});
+    });
+    $(document).on('ready', function(){
+        $('#input-2').rating({min: 0, max: 5, step: 0.1, stars: 5, size:'xs'});
+    });
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    $(document).ready(function () {
+        $("#mycarousel").carousel({
+            interval: 5000
+        });
+        $("#carousel-pause").click(function () {
+            $("#mycarousel").carousel('pause');
+        });
+        $("#carousel-play").click(function () {
+            $("#mycarousel").carousel('cycle');
+        });
+    });
+    $(document).on("click", ".reservation", function () {
+        console.log("aaaaaaaaaa")
+        var city = $(".city").data('city');
+        var barbershop = $(".barbershop").data('barbershop');
+        var date = $(".date").data('date');
+        var time = $(".time").data('time');
+        var service_type = $(".service_type").data('service_type');
+        var reservation_date_and_time = $(".reservation_date_and_time").data('reservation_date_and_time');
+        console.log(city)
+        console.log(reservation_date_and_time)
+        $(".hidden_val #city").val( city );
+        $(".hidden_val #barbershop").val( barbershop );
+        $(".hidden_val #date").val( date );
+        $(".hidden_val #time").val( time );
+        $(".hidden_val #service_type").val( service_type );
+        $(".hidden_val #reservation_date_and_time").val( reservation_date_and_time );
+    });
+</script>
+{% block background %}
+{% endblock %}
+</body>
+</html>

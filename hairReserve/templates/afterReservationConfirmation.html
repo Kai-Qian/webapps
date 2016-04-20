@@ -1,0 +1,67 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block content %}
+    <div class="outterBackground">
+        <div class="container">
+            <div class="row row-content" style="border-bottom: 0px">
+                <div class="col-xs-12 col-sm-12 innerBackground">
+                    <p class="blackFont" style="font-size: xx-large">
+                        Thank you for your reservation</p>
+                    <div class="thumbnail">
+                        <a href="{% url 'follow' barbershop.name %}">
+                            {% if barbershop.picture_url %}
+                                <img src="{{ barbershop.picture_url }}" class="img-rotate img-thumbnail"
+                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                            {% else %}
+                                <img src="{% static 'img/default-avatar.png' %}"
+                                     class="img-rotate img-thumbnail"
+                                     style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                            {% endif %}
+{#                            <img class="list-group-image" style="float: left" src="http://placehold.it/400x250/000/fff"#}
+{#                                 alt=""/>#}
+                        </a>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6">
+                                <h2>Reservation information:</h2>
+                                <p class="blackFont lead">
+                                    Date:
+                                    {{ date }}</p>
+                                <p class="blackFont">
+                                    Time:
+                                    {{ time }}</p>
+                                <p class="blackFont">
+                                    Service type:
+                                    {{ service_type }}</p>
+                                <p class="blackFont">
+                                    City:
+                                    {{ city }}</p>
+                                <a href="{% url 'follow' barbershop.name %}">
+                                    <p class="blackFont">
+                                        Barbershop:
+                                        {{ barbershop.name }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-content" style="border-bottom: 0px">
+                <div class="col-xs-12 col-sm-12 innerBackground" style="margin-top: 0px">
+                    <p class="blackFont" style="font-size: large">
+                        Thank you for choosing {{ barbershop.name }}. You could call {{ barbershop.phone }} for more
+                        information. Sign up today to receive the latest news, sales and more information
+                        from {{ barbershop.name }}’s at: {{ barbershop.website }}</p>
+                    <iframe
+                            width="1080"
+                            height="400"
+                            frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC73eT1Leato7dErKg-tUHfltd6Ywd0Vh8
+      &q={{ result }}
+      " allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

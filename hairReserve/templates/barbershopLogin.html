@@ -1,0 +1,52 @@
+{% extends "logAndRegister-base.html" %}
+{% load static %}
+{% block regOrLog %}
+    <div class="form-box item" id="loginPage">
+        <div class="form-top">
+            <div class="form-top-left">
+                <h3>Login to our site as barbershop user</h3>
+                <p>Enter your email and password to log on:</p>
+            </div>
+            <div class="form-top-right">
+                <i class="fa fa-lock"></i>
+            </div>
+        </div>
+
+        <div class="form-bottom">
+            {% for error in errors %}
+                <p class="warning">{{ error }}</p>
+            {% endfor %}
+            <form role="form" method="post" action="{% url 'barbershopLogin' %}"
+                  class="login-form">
+                {% for field in loginForm.visible_fields %}
+                    {% if field.html_name == 'password' %}
+                        <div class="form-group">
+                            <input type="password" id="{{ field.id_for_label }}"
+                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                   class="form-control">
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <input type="text" id="{{ field.id_for_label }}"
+                                   name="{{ field.html_name }}" placeholder="{{ field.label }}"
+                                   class="form-control">
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn">Sign in</button>
+                <div class="w3-row">
+                    <li class="dropdown noDot w3-col s3">
+                        <p class="dropdown-toggle" data-toggle="dropdown"
+                           role="button">Sign up</p>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'register' %}">As customer</a></li>
+                            <li><a href="{% url 'registerAsBarbershop' %}">As barbershop</a></li>
+                        </ul>
+                    </li>
+                    <a href="{% url 'login' %}" style="color: white" class="w3-col s4 w3-right">Sign in as customer</a>
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block content %}
+    <div class="background">
+        <div class="container">
+            <div class="row row-content">
+                <div class="col-xs-12 col-sm-12">
+                    <p class="blackFont" style="font-size: xx-large">
+                        Please select the modifications</p>
+                </div>
+            </div>
+            <div class="row row-content">
+                <div class="col-xs-12 col-sm-11">
+                    <form role="form" method="post" id="modifyReservationForm" action="{% url 'modifyReservation' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                        <div class="w3-row-padding">
+                            {% for field in search_form.visible_fields %}
+                                {% if field.html_name == 'service_type' %}
+                                    <div class="form-group w3-col s3 styled-select">
+                                        <select name="new_service_type" style="width:100%;color: black">
+                                            {% for choice in search_form.service_type.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'time' %}
+                                    <div class="form-group w3-col s2 styled-select">
+                                        <select name="new_time" style="width:100%;color: black">
+                                            {% for choice in search_form.time.field.choices %}
+                                                <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                {% elif field.html_name == 'city' %}
+                                    <input type="hidden" name="city" value="{{ city }}">
+                                {% else %}
+                                    <div class="form-group w3-col s2">
+                                        <div id="div_{{ field.html_name }}"
+                                             class="form-group{% if field.errors %} has-error{% endif %}">
+                                            {{ field }}
+                                            <div class="text-muted pull-right">
+                                                <small>{{ field.help_text }}</small>
+                                            </div>
+                                            <div class="help-block">
+                                                {{ field.errors }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                            {% endfor %}
+                            <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                            <input type="hidden" name="old_date" value="{{ date}}">
+                            <input type="hidden" name="old_time" value="{{ time }}">
+                            <input type="hidden" name="old_service_type" value="{{ service_type }}">
+                            <input type="hidden" name="reservation_date_and_time"
+                                   value="{{ reservation_date_and_time }}">
+                            <div class="form-group w3-col s6">
+                                <button type="submit" class="btn" form="modifyReservationForm">Modify</button>
+                                <button type="submit" class="btn4 btn-warning" form="cancel">Cancel Reservation</button>
+                                <button type="submit" class="btn5 btn-success" form="return">Return</button>
+                            </div>
+                        </div>
+                    </form>
+                    <form role="form" method="get" id="return"
+                          action="{% url 'profile' %}">
+                        {% csrf_token %}
+                    </form>
+                    <form role="form" method="post" id="cancel"
+                          action="{% url 'cancelReservation' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="city" value="{{ city }}">
+                        <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                        <input type="hidden" name="old_date" value="{{ date}}">
+                        <input type="hidden" name="old_time" value="{{ time }}">
+                        <input type="hidden" name="old_service_type" value="{{ service_type }}">
+                        <input type="hidden" name="reservation_date_and_time"
+                               value="{{ reservation_date_and_time }}">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

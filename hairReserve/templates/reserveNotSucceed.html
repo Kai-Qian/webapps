@@ -1,0 +1,33 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block content %}
+    <div class="outterBackground">
+        <div class="container">
+            <div class="row row-content" style="border-bottom: 0px">
+                <div class="col-xs-12 col-sm-12">
+                    <p class="blackFont" style="font-size: xx-large">
+                        We are sorry...</p>
+                </div>
+                <div class="col-xs-12 col-sm-12">
+                    {% for result in results %}
+                        <p class="blackFont" style="font-size: xx-large">
+                            {{ result }}</p>
+                    {% endfor %}
+                </div>
+                <form role="form" method="get" id="return"
+                      action="{% url 'profile' %}">
+                    {% csrf_token %}
+
+                </form>
+                <div class="row row-content">
+                    <div class="col-sm-4 col-sm-push-4">
+                        <button type="submit" style="display: inline-block" class="btn2 btn-success" form="return">
+                            Return
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,302 @@
+{% extends "home-base.html" %}
+{% load static %}
+{% block content %}
+    <div style="background: #e2f5d8">
+        <div class="container"
+             style="padding-top: 60px;max-width:100%">
+            <div class="row">
+                <nav class="hidden-xs col-sm-1 col-sm-pull-1" style="float: left" id="myScrollspy">
+                    <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="-1">
+                        <li>
+                            {% if profile.picture_url %}
+                                <img src="{{ profile.picture_url }}" class="img-rotate img-thumbnail"
+                                     style="max-height: 200px;width: 150px"/>
+                            {% else %}
+                                <img src="{% static 'img/default-avatar.png' %}" class="img-rotate img-thumbnail"
+                                     style="max-height: 200px;width: 150px"/>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </nav>
+                <div class="row col-xs-12 col-sm-10 profileInnerBackground">
+                    <h1 class="page-header">{{ user.username }}'s Profile</h1>
+                    <div id="account_details" class="row row-content">
+                        <form class="form-horizontal" id="update" action="{% url 'editprofile' %}" method="post"
+                              enctype="multipart/form-data">
+
+                            {% for profile in profile_form.visible_fields %}
+                                <div class="form-group" style="margin-bottom: 0px">
+                                    {% if profile.label == 'Picture' %}
+                                        <label style="margin-left: 20px">{{ profile.label }}: </label>
+                                        <p><input id="id_picture" name="picture" type="file"/></p>
+                                        {% for error in profile.errors %}
+                                            <span style="color:red"> {{ error }} </span>
+                                        {% endfor %}
+                                    {% else %}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                            {% if message %}
+                                <div class="message">
+                                    {{ message }}
+                                </div>
+                            {% endif %}
+
+                            <h2>Profile</h2>
+                            <div id="profile" class="row row-content">
+                                {% for user in user_form.visible_fields %}
+                                    {% if user.html_name == 'email' %}
+                                        <div class="form-group w3-col s7">
+                                            <label class="col-sm-4 control-label">{{ user.label }}: </label>
+                                            <p class="col-sm-8">{{ user }}
+                                                {% for error in errors %}
+                                                    <span style="color:red"> {{ error }} </span>
+                                                {% endfor %}
+                                            </p>
+
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group w3-col s7" style="margin-bottom: 10px">
+
+                                            <label class="col-sm-4 control-label">{{ user.label }}: </label>
+                                            <p class="col-sm-8">{{ user }}
+                                                {% for error in user.errors %}
+                                                    <span style="color:red"> {{ error }} </span>
+                                                {% endfor %}
+                                            </p>
+
+                                        </div>
+                                    {% endif %}
+
+                                {% endfor %}
+                                {% for profile in profile_form.visible_fields %}
+
+                                    <div class="form-group w3-col s7" style="margin-bottom: 10px">
+
+                                        {% if profile.label != 'Picture' %}
+                                            <label class="col-sm-4 control-label">{{ profile.label }}: </label>
+                                            <p class="col-sm-8">{{ profile }}
+                                                {% for error in profile.errors %}
+                                                    <span style="color:red"> {{ error }} </span>
+                                                {% endfor %}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <h2>Address</h2>
+                            <div id="address" class="row row-content">
+                                {% for address in address_form.visible_fields %}
+                                    <div class="form-group w3-col s6">
+                                        <label class="col-sm-4 control-label">{{ address.label }}: </label>
+                                        <p class="col-sm-8">{{ address }}
+                                            {% for error in address.errors %}
+                                                <span style="color:red"> {{ error }} </span>
+                                            {% endfor %}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-sm" form="update">Update</button>
+                            {% csrf_token %}
+                        </form>
+                    </div>
+
+                    <div id="upcoming_reservations" class="row row-content">
+                        <h2>Upcoming reservations</h2>
+                        {% for reservation in upcoming_reservations %}
+                            <div class="thumbnail">
+                                <a href="{% url 'follow' reservation.barbershop.name %}">
+                                    {% if reservation.barbershop.picture_url %}
+                                        <img src="{{ reservation.barbershop.picture_url }}" class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% else %}
+                                        <img src="{% static 'img/default-avatar.png' %}"
+                                             class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% endif %}
+                                    {#                                    <img class="list-group-image" style="float: left"#}
+                                    {#                                         src="http://placehold.it/400x250/000/fff"#}
+                                    {#                                         alt=""/>#}
+                                </a>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <p class="blackFont lead">
+                                            Date:
+                                            {{ reservation.start_date }}</p>
+                                        <p class="blackFont">
+                                            Time:
+                                            {{ reservation.start_time }}</p>
+                                        <p class="blackFont">
+                                            Service type:
+                                            {{ reservation.service_type }}</p>
+                                        <p class="blackFont">
+                                            City:
+                                            {{ reservation.barbershop.address.city }}</p>
+                                        <a href="{% url 'follow' reservation.barbershop.name %}">
+                                            <p class="blackFont">
+                                                Barbershop:
+                                                {{ reservation.barbershop.name }}</p>
+                                        </a>
+                                        <p class="blackFont"
+                                           data-reservation_date_and_time="{{ reservation.reservation_date_and_time|date:'Y-m-d H:M' }}">
+                                            Reservation time:
+                                            {{ reservation.reservation_date_and_time }}</p>
+                                        <form role="form" method="post" id="{{ reservation.reservation_date_and_time }}"
+                                              action="{% url 'redirectToModification' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="barbershop"
+                                                   value="{{ reservation.barbershop.name }}">
+                                            <input type="hidden" name="city"
+                                                   value="{{ reservation.barbershop.address.city }}">
+                                            <input type="hidden" name="date"
+                                                   value="{{ reservation.start_date|date:'Y-m-d' }}">
+                                            <input type="hidden" name="time" value="{{ reservation.start_time }}">
+                                            <input type="hidden" name="service_type" value="{{ reservation.service_type }}">
+                                            <input type="hidden" name="reservation_date_and_time"
+                                                   value="{{ reservation.reservation_date_and_time|date:'Y-m-d H:i' }}">
+                                        </form>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-10 col-sm-push-2">
+                                                <button type="submit" class="btn2 btn-primary btn-sm"
+                                                        form="{{ reservation.reservation_date_and_time }}">
+                                                    Modify or Cancel Reservation
+                                                </button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="past_reservations" class="row row-content">
+                        <h2>Past reservations</h2>
+                        {% for reservation in past_reservations %}
+                            <div class="thumbnail">
+                                <a href="{% url 'follow' reservation.barbershop.name %}">
+                                    {% if reservation.barbershop.picture_url %}
+                                        <img src="{{ reservation.barbershop.picture_url }}" class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% else %}
+                                        <img src="{% static 'img/default-avatar.png' %}"
+                                             class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% endif %}
+                                    {#                                    <img class="list-group-image" style="float: left"#}
+                                    {#                                         src="http://placehold.it/400x250/000/fff"#}
+                                    {#                                         alt=""/>#}
+                                </a>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <p class="blackFont lead">
+                                            Date:
+                                            {{ reservation.start_date }}</p>
+                                        <p class="blackFont">
+                                            Time:
+                                            {{ reservation.start_time }}</p>
+                                        <p class="blackFont">
+                                            Service type:
+                                            {{ reservation.service_type }}</p>
+                                        <p class="blackFont">
+                                            City:
+                                            {{ reservation.barbershop.address.city }}</p>
+                                        <a href="{% url 'follow' reservation.barbershop.name %}">
+                                            <p class="blackFont">
+                                                Barbershop:
+                                                {{ reservation.barbershop.name }}</p>
+                                        </a>
+                                        <p class="blackFont"
+                                           data-reservation_date_and_time="{{ reservation.reservation_date_and_time|date:'Y-m-d H:M' }}">
+                                            Reservation time:
+                                            {{ reservation.reservation_date_and_time }}</p>
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-10 col-sm-push-2">
+                                                <a href="{% url 'follow' reservation.barbershop.name %}">
+                                                    <button type="submit" class="btn2 btn-primary btn-sm"
+                                                            form="{{ reservation.reservation_date_and_time }}">
+                                                        Review the barbershop
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div id="favorites" class="row row-content">
+                        <h2>Favorites</h2>
+                        {% for barbershop in barbershops %}
+                            <div class="thumbnail">
+                                <a href="{% url 'follow' barbershop.name %}">
+                                    {% if barbershop.picture_url %}
+                                        <img src="{{ barbershop.picture_url }}" class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% else %}
+                                        <img src="{% static 'img/default-avatar.png' %}"
+                                             class="img-rotate img-thumbnail"
+                                             style="max-height: 250px;height: 250px;width: 400px; float: left"/>
+                                    {% endif %}
+                                    {#                                    <img class="list-group-image" style="float: left"#}
+                                    {#                                         src="http://placehold.it/400x250/000/fff"#}
+                                    {#                                         alt=""/>#}
+                                </a>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <a href="{% url 'follow' barbershop.name %}">
+                                            <h1 class="list-group-item-heading">
+                                                {{ barbershop.name }}</h1>
+                                        </a>
+                                        <p class="blackFont list-group-item-text">
+                                            {{ barbershop.description }}</p>
+
+
+                                        <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                            Service type: {{ barbershop.service_type }}</p>
+                                        <p class="blackFont list-group-item-text" style="margin-bottom: 2px">
+                                            Rating: {{ barbershop.rating }}</p>
+                                        <p class="blackFont list-group-item-text">
+                                            Operation time: {{ barbershop.operation_start_time }}
+                                            - {{ barbershop.operation_end_time }}</p>
+
+                                        <form role="form" method="post" id="reserveThroughFavorites"
+                                              action="{% url 'reserveThroughFavorites' %}">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="city" value="{{ barbershop.address.city }}">
+                                            <input type="hidden" name="barbershop" value="{{ barbershop }}">
+                                            <button type="submit" class="btn success" form="reserveThroughFavorites">
+                                                Reserve
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                <nav class="hidden-xs col-sm-1 col-sm-pull-1" style="float: right" id="myScrollspy">
+                    <ul class="nav nav-pills nav-stacked" data-spy="affix" data-offset-top="100">
+                        <li><a href="#account_details">Account details</a>
+                            <ul class="nav nav-pills nav-stacked">
+                                <li><a href="#profile" style="font-size: small">Profile</a></li>
+                                <li><a href="#address" style="font-size: small">Address</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#upcoming_reservations">Upcoming reservations</a></li>
+                        <li><a href="#past_reservations">Past reservations</a></li>
+                        <li><a href="#favorites">Favorites</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block active3 %}
+    active
+{% endblock %}
